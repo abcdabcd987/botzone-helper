@@ -7,3 +7,5 @@ module.exports =
         options:
             dialect: "postgres"
             logging: false
+
+    matches_per_page: 50

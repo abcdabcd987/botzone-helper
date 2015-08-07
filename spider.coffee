@@ -2,6 +2,8 @@ _ = require 'lodash'
 $ = require('jquery')(require("node-jsdom").jsdom().parentWindow)
 request = require 'request'
 Promise = require 'bluebird'
+moment = require 'moment'
+
 models = require './models'
 
 url = 'http://botzone.org/'
@@ -48,15 +50,15 @@ insert = (results) ->
         _.remove results, (rec) ->
             _.any (doc.matchid == rec.matchid for doc in docs)
         models.Match.bulkCreate(results)
-
+        results
 
 
 run = ->
     fetch()
     .then parse
     .then insert
-    .then -> console.log new Date(), 'spider success'
+    .then (results) -> console.log moment(new Date()).format('YYYY-MM-DD HH:MM:ss') + ' add ' +results.length + ' new match(es)' if results.length
     .error console.error
-    .finally run
+    .finally -> setImmediate run
 
 module.exports = run

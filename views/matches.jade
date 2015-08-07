@@ -1,0 +1,28 @@
+extends layout
+
+block title
+  title Matches
+
+block content
+  h1 Matches
+  table#table-matches
+    thead
+      tr
+        th time
+        th bot0
+        th score0
+        th bot1
+        th score1
+        th watch
+    tbody
+      for match in matches
+        tr
+          td= moment(match.startedAt).format('YYYY-MM-DD HH:MM')
+          td #{match.user0}: #[small #{match.bot0}]
+          td= match.score0
+          td #{match.user1}: #[small #{match.bot1}]
+          td= match.score1
+          td #[a(href="http://botzone.org/match/#{match.matchid}") watch]
+    
+  a(href="/matches/?page=#{Math.max(query.page-1,0)}") &#10094;
+  a(href="/matches/?page=#{Math.min(query.page+1,Math.ceil(cnt_match/config.matches_per_page)-1)}") &#10095;
